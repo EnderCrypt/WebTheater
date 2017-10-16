@@ -1,5 +1,6 @@
 Theater = {}
 Theater.userID = null;
+Theater.RoomUsers = [];
 Theater.Listerners = [];
 
 $(function()
@@ -88,6 +89,48 @@ Theater.Listerners[NetMessageType.ENDPOINT_LOGIN] = function(data)
 Theater.Listerners[NetMessageType.SERVER_MESSAGE] = function(data)
 {
 	console.log("[SERVER MSG] ", data)
+};
+Theater.Listerners[NetMessageType.USER_JOIN] = function(data)
+{
+	var joins = data.split("/");
+	for (var i in joins)
+	{
+		var split = joins[i].split(":");
+		var id = Number(split[0]);
+		var name = split[1];
+		var x = Number(split[2]);
+		var y = Number(split[3]);
+		var position = {x: x, y: y};
+		Theater.RoomUsers[id] = {name: name, position: position};
+	}
+};
+Theater.Listerners[NetMessageType.USER_LEAVE] = function(data)
+{
+	var id = Number(data);
+	Theater.RoomUsers[id] = null;
+};
+Theater.Listerners[NetMessageType.CHATMESSAGE_LOCAL] = function(data)
+{
+	// DO CHAT MESSAGE
+};
+Theater.Listerners[NetMessageType.SETPOS] = function(data)
+{
+	var split = data.split(":");
+	var id = Number(split[0]);
+	if (id != Theater.userID)
+	{
+		var position = Theater.RoomUsers[id].position;
+		position.x = Number(split[1]);
+		position.y = Number(split[2]);
+	}
+};
+Theater.Listerners[NetMessageType.MOVE] = function(data)
+{
+	var split = data.split(":");
+	var position = {x: x, y: y};
+	var position = Theater.RoomUsers[Theater.userID].position;
+	position.x = Number(split[0]);
+	position.y = Number(split[1]);
 };
 
 

@@ -36,6 +36,16 @@ public class Room
 			throw new IllegalStateException("User " + user + " already in room " + this);
 		announce(user.getName() + " has entered the room!");
 		users.add(user);
+		// send JOIN's to this user
+		for (User other : users)
+		{
+			user.getUserEndpoint().send(NetMessageType.USER_JOIN, String.valueOf(other.getId()));
+		}
+		// send JOIN's to all users in room
+		for (User other : users)
+		{
+			other.getUserEndpoint().send(NetMessageType.USER_JOIN, String.valueOf(user.getId()));
+		}
 	}
 
 	public void removeUser(User user)
@@ -43,6 +53,11 @@ public class Room
 		if (users.remove(user) == false)
 		{
 			throw new IllegalStateException("User " + user + " was not in room " + this);
+		}
+		// send JOIN's to all users in room
+		for (User other : users)
+		{
+			other.getUserEndpoint().send(NetMessageType.USER_LEAVE, String.valueOf(user.getId()));
 		}
 		announce(user.getName() + " has left the room!");
 	}
