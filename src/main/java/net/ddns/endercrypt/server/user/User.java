@@ -2,6 +2,8 @@ package net.ddns.endercrypt.server.user;
 
 import net.ddns.endercrypt.web.socket.UserEndpointObject;
 
+import java.awt.Point;
+
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCode;
 import javax.websocket.CloseReason.CloseCodes;
@@ -21,6 +23,7 @@ public class User implements UserEndpointObject
 
 	private int id;
 	private String name;
+	private Point position = new Point(0, 0);
 
 	public User(UserEndpoint userEndpoint)
 	{
@@ -115,6 +118,11 @@ public class User implements UserEndpointObject
 	public String getName()
 	{
 		return name;
+	}
+
+	public Point position()
+	{
+		return position;
 	}
 
 	@Override
