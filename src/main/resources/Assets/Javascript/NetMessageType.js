@@ -20,3 +20,6 @@ NetMessageType.CHATMESSAGE_LOCAL = 5;
 
 //NOT USED FROM CLIENTSIDE
 NetMessageType.SETPOS = 6;
+
+// send position
+NetMessageType.MOVE = 7;

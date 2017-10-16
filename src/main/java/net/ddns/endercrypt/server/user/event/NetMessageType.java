@@ -22,4 +22,7 @@ public class NetMessageType
 
 	// send id and position
 	public static final int SETPOS = 6;
+
+	// TELEPORT/ send position
+	public static final int MOVE = 7;
 }
