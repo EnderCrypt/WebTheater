@@ -1,0 +1,88 @@
+package net.ddns.endercrypt.web.api;
+
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+
+import org.eclipse.jetty.http.HttpStatus;
+
+import net.ddns.endercrypt.server.map.tileset.Tile;
+import net.ddns.endercrypt.server.map.tileset.Tileset;
+
+@Path("/Tileset")
+public class TilesetApi
+{
+	private static final File tilesetImageFile = new File("data/gfx/tileset.bmp");
+	private static final File tilesetSolidityFile = new File("data/gfx/tileset.txt");
+	private static final Dimension tileSize = new Dimension(32, 32);
+
+	private static final Tileset tileset;
+	static
+	{
+		try
+		{
+			tileset = new Tileset(tilesetImageFile, tilesetSolidityFile, tileSize);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public TilesetApi() throws IOException
+	{
+
+	}
+
+	@GET
+	@Path("/Info")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Object main() throws IOException
+	{
+		return tileset.getTilesetInfo().serializable();
+	}
+
+	@GET
+	@Path("/Solid")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> solidity() throws IOException
+	{
+		return Files.readAllLines(tilesetSolidityFile.toPath());
+	}
+
+	@GET
+	@Path("/Image/{index}")
+	@Produces("image/png")
+	public Response main(@PathParam("index") int index) throws IOException
+	{
+		if ((index < 0) || (index >= tileset.getTilesetInfo().getCount()))
+		{
+			return Response.status(HttpStatus.BAD_REQUEST_400).build();
+		}
+
+		Tile tile = tileset.get(index);
+		return Response.ok().entity(new StreamingOutput()
+		{
+			@Override
+			public void write(OutputStream output) throws IOException, WebApplicationException
+			{
+				ImageIO.write(tile.getImage(), "PNG", output);
+				output.flush();
+			}
+		}).build();
+	}
+
+}

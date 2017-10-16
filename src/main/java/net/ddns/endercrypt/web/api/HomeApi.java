@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import net.ddns.endercrypt.web.page.Pages;
 
 @Path("/")
-public class Home
+public class HomeApi
 {
 	@GET
 	@Produces(MediaType.TEXT_HTML)

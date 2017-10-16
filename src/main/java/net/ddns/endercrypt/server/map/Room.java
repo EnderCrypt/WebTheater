@@ -1,4 +1,4 @@
-package net.ddns.endercrypt.server;
+package net.ddns.endercrypt.server.map;
 
 import java.util.ArrayList;
 import java.util.Collections;

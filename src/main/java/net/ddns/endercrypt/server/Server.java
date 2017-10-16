@@ -2,6 +2,8 @@ package net.ddns.endercrypt.server;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.ddns.endercrypt.server.map.Room;
 import net.ddns.endercrypt.server.user.User;
 import net.ddns.endercrypt.server.user.id.ArrayIdManager;
 import net.ddns.endercrypt.server.user.id.IdManager;
