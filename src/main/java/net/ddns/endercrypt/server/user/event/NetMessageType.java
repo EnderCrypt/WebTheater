@@ -11,12 +11,15 @@ public class NetMessageType
 	// send message
 	public static final int SERVER_MESSAGE = 2;
 
-	// send id and name
+	// send id and name and position
 	public static final int USER_JOIN = 3;
 
-	// send id and name
+	// send id
 	public static final int USER_LEAVE = 4;
 
 	// send user id and message
 	public static final int CHATMESSAGE_LOCAL = 5;
+
+	// send id and position
+	public static final int SETPOS = 6;
 }
