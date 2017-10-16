@@ -67,6 +67,14 @@ public class User implements UserEndpointObject
 			return;
 		}
 		name = data;
+		for (char c : name.toCharArray())
+		{
+			c = Character.toLowerCase(c);
+			if ((c < 'a') || (c > 'z'))
+			{
+				throw new IllegalArgumentException("Name contains illegal characters: " + c);
+			}
+		}
 		id = Server.idManager.giveId(this);
 		getUserEndpoint().send(NetMessageType.ENDPOINT_LOGIN, String.valueOf(id));
 		Server.announce("User joined: " + getName() + " (id: " + id + ")");
