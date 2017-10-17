@@ -102,7 +102,17 @@ public class User implements UserEndpointObject
 	public void onDisconnect(CloseReason closeReason)
 	{
 		Server.idManager.remove(getId());
-		System.out.println("User " + getName() + " Disconnected, code: " + closeReason.getCloseCode().getCode() + " reason: " + closeReason.getReasonPhrase());
+		StringBuilder sb = new StringBuilder();
+		if (getName() == null)
+			sb.append("Unconnected user");
+		else
+			sb.append("User ").append(getName());
+
+		sb.append(" Disconnected, code: ").append(closeReason.getCloseCode().getCode());
+		if (closeReason.getReasonPhrase().equals("") == false)
+			sb.append(" reason: ").append(closeReason.getReasonPhrase());
+
+		System.out.println(sb.toString());
 	}
 
 	public UserEndpoint getUserEndpoint()
