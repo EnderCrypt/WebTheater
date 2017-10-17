@@ -29,6 +29,7 @@ $(function()
 	// listeners
 	Theater.Websocket.onopen = function(){console.log("Websocket connected!")};
 	Theater.Websocket.onclose = function(event){
+		console.log("[WS CLOSED] ", event);
 		messageReload("Disconnected from server! (code: "+event.code+")\nReason: "+event.reason);
 		return;
 	};

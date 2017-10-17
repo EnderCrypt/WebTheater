@@ -3,6 +3,7 @@ package net.ddns.endercrypt.server.user;
 import net.ddns.endercrypt.web.socket.UserEndpointObject;
 
 import java.awt.Point;
+import java.util.concurrent.TimeUnit;
 
 import javax.websocket.CloseReason;
 import javax.websocket.CloseReason.CloseCode;
@@ -16,6 +17,7 @@ import net.ddns.endercrypt.web.socket.UserEndpoint;
 
 public class User implements UserEndpointObject
 {
+	private static final long PING_TIMEOUT = TimeUnit.SECONDS.toMillis(1);
 	private static final UserEventManager<User> userEventManager = new UserEventManager<>(User.class, 100);
 
 	private UserEndpoint userEndpoint;
@@ -24,22 +26,28 @@ public class User implements UserEndpointObject
 	private int id;
 	private String name;
 	private Point position = new Point(0, 0);
+	private long lastMessageRecieved;
 
 	public User(UserEndpoint userEndpoint)
 	{
 		this.userEndpoint = userEndpoint;
 		userEndpoint.bind(this);
+		lastMessageRecieved = System.currentTimeMillis();
 	}
 
 	@Override
 	public void onMessage(String message)
 	{
+		// find delimiter
 		int delimiterIndex = message.indexOf(':');
 		if (delimiterIndex == -1)
 		{
 			disconnect(CloseCodes.UNEXPECTED_CONDITION, "expected a ':'");
 			return;
 		}
+		// register message (ping)
+		lastMessageRecieved = System.currentTimeMillis();
+		// extract message type
 		int messageType = -1;
 		try
 		{
@@ -50,7 +58,9 @@ public class User implements UserEndpointObject
 			disconnect(CloseCodes.UNEXPECTED_CONDITION, "expected a message type in the beginning of the message");
 			return;
 		}
+		// extract data
 		String data = message.substring(delimiterIndex + 1);
+		// trigger event
 		try
 		{
 			userEventManager.activateEvent(this, messageType, data);
@@ -101,7 +111,12 @@ public class User implements UserEndpointObject
 	@Override
 	public void onDisconnect(CloseReason closeReason)
 	{
+		// remove user
+		Server.unconnectedUsers.remove(this);
+		// TODO: remove user from all rooms
+		// free up id
 		Server.idManager.remove(getId());
+		// disconnnect message
 		StringBuilder sb = new StringBuilder();
 		if (getName() == null)
 			sb.append("Unconnected user");
@@ -133,6 +148,13 @@ public class User implements UserEndpointObject
 	public Point position()
 	{
 		return position;
+	}
+
+	public boolean isTimedOut()
+	{
+		long time = System.currentTimeMillis();
+		time = (time - lastMessageRecieved);
+		return (time >= PING_TIMEOUT);
 	}
 
 	@Override
