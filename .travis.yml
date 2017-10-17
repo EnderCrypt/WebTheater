@@ -1,11 +1,14 @@
 sudo: false
 language: java
+script: "mvn clean && mvn compile && mvn package"
 cache:
   directories:
   - "$HOME/.cache"
-
 deploy:
-  provider: script
-  script: "mvn compile && mvn package"
+  provider: releases
+  api_key:
+    secure: AYtOryGE1LB1SDj3xRYI+VqO0tQeyO4Oe39XaM3BT1mg2rDl9ff5HVDQQyoJyKpUjPSYrrMjbQvoJ0opjdrG3AweJttlsPgzV89wI6EgaktllVeLRGD+lI+uJ5zuJnj6j5mfgGPiiUSup8qtRL43HgTc3AZKudYNAskwDgxq2jr5HTU81xzE6nBvOAJnvSYjPdr16ByHd0fVyn+mJxm2PStBaKWHJWSRJHgRdMciLdHUUl5RQ1KNLnEKi+KZ7EQuYjs1gQzfkYNxOx3feCQJR1OdzC8fqCPkt/GRJpwcSww7eLkXxeZHNHx03UG6I3vqN2szMhR/r+/TaSHg7Nh1x04SfYVPZVWv1IzD1eBbcOiaullr9mVm8RX8wdCxpBrWhxLDFC4/j845dL124OypcA8Rqf11P0gB6VoOfrCs/TcSGE4mO81lmTPKpmjfeTK/y9QaThBWgQ7QurqsCxn9mlKyGCImnIxh9WOP5boHUGw2A54qRzqfvnsK6wV+2/IFEZKeo4rr1nQkpqKFrzlvrEVZiJPv5i+jz2VStKgy7FoBapyhm2/ahlnXNCaClciLNrNy61YuGLYa2EMDOdZR16RP2mFJsFT5f8NvHyFJMM+fnRjBtNV11TY62fGhfMfhL53IJEDCzPowCzSzs0Blb0xOkaZZM0NX3FpY3BZShfM=
+  file: ''
   on:
     tags: true
+    repo: EnderCrypt/WebTheater
