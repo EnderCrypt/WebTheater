@@ -1,0 +1,11 @@
+sudo: false
+language: java
+cache:
+  directories:
+  - "$HOME/.cache"
+
+deploy:
+  provider: script
+  script: "mvn compile && mvn package"
+  on:
+    tags: true
