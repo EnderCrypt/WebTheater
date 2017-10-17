@@ -1,9 +1,15 @@
-package net.ddns.endercrypt.server.user.id;
+package net.ddns.endercrypt.server.user.id.impl;
 
 import java.util.Iterator;
 
 import net.ddns.endercrypt.server.user.User;
+import net.ddns.endercrypt.server.user.id.IdManager;
+import net.ddns.endercrypt.server.user.id.UserLimitReached;
 
+/**
+ * this implemetation is possibly more efficient than {@code MapIdManager} however has to be tested more
+ * @author EnderCrypt
+ */
 public class ArrayIdManager implements IdManager
 {
 	private User[] users;
