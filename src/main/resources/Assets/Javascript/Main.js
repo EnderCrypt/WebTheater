@@ -37,8 +37,8 @@ $(function()
 	// tiles
 	$.ajax(
 	{
-		  method: "GET",
-		  url: "Api/Tileset/Info"
+		method: "GET",
+		url: "Api/Tileset/Info"
 	}).done(function(data)
 	{
 		Theater.TileInfo = data;
@@ -47,7 +47,7 @@ $(function()
 		for (i=0;i<Theater.TileInfo.count;i++)
 		{
 			var img = new Image();
-			img.src = "http://"+location.host+"/Api/Tileset/Tile/"+i;
+			img.src = "http://"+location.host+"/Api/Tileset/Image/"+i;
 			console.log("Loading tile "+i+" url: "+img.src)
 			Theater.Tiles.push(img);
 		}
