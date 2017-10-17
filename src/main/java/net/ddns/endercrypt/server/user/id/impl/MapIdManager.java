@@ -44,5 +44,4 @@ public class MapIdManager implements IdManager
 	{
 		return users.values();
 	}
-
 }
