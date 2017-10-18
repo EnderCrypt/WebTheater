@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import net.ddns.endercrypt.server.user.User;
 import net.ddns.endercrypt.server.user.event.NetMessageType;
 
@@ -13,10 +17,12 @@ public class Room
 	private List<User> immutableList = Collections.unmodifiableList(users);
 
 	private Dimension roomSize = new Dimension(10, 10);
+	private boolean youtube;
 	private int[][] room;
 
 	public Room()
 	{
+		youtube = false;
 		room = new int[roomSize.width][roomSize.height];
 		for (int y = 0; y < roomSize.width; y++)
 		{
@@ -30,7 +36,12 @@ public class Room
 		}
 	}
 
-	public boolean isUserInRoom(User user)
+	public boolean isYoutube()
+	{
+		return youtube;
+	}
+
+	public boolean containsUser(User user)
 	{
 		return users.contains(user);
 	}
@@ -43,8 +54,23 @@ public class Room
 		}
 	}
 
-	public String getRoomData()
+	public JSONObject getRoomJson()
 	{
+		JSONObject json = new JSONObject();
+		json.put("width", roomSize.width);
+		json.put("height", roomSize.height);
+		json.put("youtube", isYoutube());
+		JSONArray tiles = new JSONArray();
+		for (int y = 0; y < roomSize.width; y++)
+		{
+			for (int x = 0; x < roomSize.height; x++)
+			{
+				tiles.put(room[x][y]);
+			}
+		}
+		json.append("tiles", tiles);
+		return json;
+		/*
 		StringBuilder sb = new StringBuilder();
 		sb.append(roomSize.width).append(',');
 		sb.append(roomSize.height).append(',');
@@ -59,15 +85,16 @@ public class Room
 		}
 		sb.setLength(sb.length() - 1);
 		return sb.toString();
+		*/
 	}
 
 	public void addUser(User user)
 	{
-		if (isUserInRoom(user))
+		if (containsUser(user))
 			throw new IllegalStateException("User " + user + " already in room " + this);
 		announce(user.getName() + " has entered the room!");
 		// send room data
-		user.getUserEndpoint().send(NetMessageType.LOAD_ROOM, getRoomData());
+		user.getUserEndpoint().send(NetMessageType.LOAD_ROOM, getRoomJson().toString());
 		// add user
 		users.add(user);
 		// send JOIN's to this user
