@@ -1,4 +1,4 @@
-package net.ddns.endercrypt.server.user.event;
+package net.ddns.endercrypt.server.event;
 
 @SuppressWarnings("serial")
 public class UnknownNetMessageType extends RuntimeException

@@ -1,4 +1,4 @@
-package net.ddns.endercrypt.server.user.event;
+package net.ddns.endercrypt.server.event;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

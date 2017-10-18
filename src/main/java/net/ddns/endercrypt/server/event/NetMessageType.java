@@ -1,4 +1,4 @@
-package net.ddns.endercrypt.server.user.event;
+package net.ddns.endercrypt.server.event;
 
 public class NetMessageType
 {

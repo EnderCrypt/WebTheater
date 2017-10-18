@@ -1,4 +1,4 @@
-package net.ddns.endercrypt.server.user.event;
+package net.ddns.endercrypt.server.event;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

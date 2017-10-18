@@ -10,9 +10,9 @@ import javax.websocket.CloseReason.CloseCode;
 import javax.websocket.CloseReason.CloseCodes;
 
 import net.ddns.endercrypt.server.Server;
-import net.ddns.endercrypt.server.user.event.NetMessageType;
-import net.ddns.endercrypt.server.user.event.UserEventManager;
-import net.ddns.endercrypt.server.user.event.WsEventListener;
+import net.ddns.endercrypt.server.event.NetMessageType;
+import net.ddns.endercrypt.server.event.UserEventManager;
+import net.ddns.endercrypt.server.event.WsEventListener;
 import net.ddns.endercrypt.web.socket.UserEndpoint;
 
 public class User implements UserEndpointObject
