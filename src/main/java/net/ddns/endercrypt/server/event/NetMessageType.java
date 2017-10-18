@@ -21,10 +21,10 @@ public class NetMessageType
 	public static final int CHATMESSAGE_LOCAL = 5;
 
 	// send id and position
-	public static final int SETPOS = 6;
+	public static final int MOVE = 6;
 
 	// TELEPORT/ send position
-	public static final int MOVE = 7;
+	public static final int TELEPORT = 7;
 
 	// send room_width, room_height, is_video_room, all tiles
 	// user join's and move should be sent directly after this

@@ -117,7 +117,11 @@ public class User implements UserEndpointObject
 	@WsEventListener(NetMessageType.MOVE)
 	private void MOVE(String data)
 	{
-		// TODO
+		String[] split = data.split(":");
+		if (split.length != 2)
+			throw new IllegalArgumentException("NetMessageType.MOVE must only contain 2 values, separated by :");
+		position.x = Integer.parseInt(split[0]);
+		position.y = Integer.parseInt(split[1]);
 	}
 
 	public void errorDisconnect(Throwable throwable)

@@ -18,11 +18,11 @@ NetMessageType.USER_LEAVE = 4;
 // send message
 NetMessageType.CHATMESSAGE_LOCAL = 5;
 
-//NOT USED FROM CLIENTSIDE
-NetMessageType.SETPOS = 6;
-
 // send position
-NetMessageType.MOVE = 7;
+NetMessageType.MOVE = 6;
+
+//NOT USED FROM CLIENTSIDE
+NetMessageType.TELEPORT = 7;
 
 //NOT USED FROM CLIENTSIDE
 NetMessageType.LOAD_ROOM = 8

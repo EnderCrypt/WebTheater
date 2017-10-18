@@ -36,6 +36,24 @@ public class Room
 		}
 	}
 
+	public void update()
+	{
+		// update movements
+		StringBuilder sb = new StringBuilder();
+		for (User user : users)
+		{
+			sb.append(user.getId()).append(":");
+			sb.append(user.position().getX()).append(":");
+			sb.append(user.position().getY()).append("/");
+		}
+		sb.setLength(sb.length() - 1);
+		String output = sb.toString();
+		for (User user : users)
+		{
+			user.getUserEndpoint().send(NetMessageType.MOVE, output);
+		}
+	}
+
 	public boolean isYoutube()
 	{
 		return youtube;
@@ -70,22 +88,6 @@ public class Room
 		}
 		json.append("tiles", tiles);
 		return json;
-		/*
-		StringBuilder sb = new StringBuilder();
-		sb.append(roomSize.width).append(',');
-		sb.append(roomSize.height).append(',');
-		sb.append(0); // IS YOUTUBE ROOM OR NOT
-		sb.append(':');
-		for (int y = 0; y < roomSize.width; y++)
-		{
-			for (int x = 0; x < roomSize.height; x++)
-			{
-				sb.append(String.valueOf(room[x][y])).append(',');
-			}
-		}
-		sb.setLength(sb.length() - 1);
-		return sb.toString();
-		*/
 	}
 
 	public void addUser(User user)
@@ -139,5 +141,4 @@ public class Room
 	{
 		return immutableList;
 	}
-
 }

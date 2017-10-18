@@ -114,21 +114,24 @@ Theater.Listerners[NetMessageType.CHATMESSAGE_LOCAL] = function(data)
 {
 	// DO CHAT MESSAGE
 };
-Theater.Listerners[NetMessageType.SETPOS] = function(data)
-{
-	var split = data.split(":");
-	var id = Number(split[0]);
-	if (id != Theater.userID)
-	{
-		var position = Theater.RoomUsers[id].position;
-		position.x = Number(split[1]);
-		position.y = Number(split[2]);
-	}
-};
 Theater.Listerners[NetMessageType.MOVE] = function(data)
 {
+	var joins = data.split("/");
+	for (var i in joins)
+	{
+		var split = joins[i].split(":");
+		var id = Number(split[0]);
+		if (id != Theater.userID)
+		{
+			var position = Theater.RoomUsers[id].position;
+			position.x = Number(split[1]);
+			position.y = Number(split[2]);
+		}
+	}
+};
+Theater.Listerners[NetMessageType.TELEPORT] = function(data)
+{
 	var split = data.split(":");
-	var position = {x: x, y: y};
 	var position = Theater.RoomUsers[Theater.userID].position;
 	position.x = Number(split[0]);
 	position.y = Number(split[1]);

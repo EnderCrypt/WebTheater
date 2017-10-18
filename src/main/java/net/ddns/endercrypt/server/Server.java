@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.websocket.CloseReason.CloseCodes;
 
+import net.ddns.endercrypt.server.event.NetMessageType;
 import net.ddns.endercrypt.server.map.Room;
 import net.ddns.endercrypt.server.user.User;
 import net.ddns.endercrypt.server.user.id.IdManager;
@@ -17,6 +18,7 @@ public class Server
 	private static final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 	static
 	{
+		scheduledExecutorService.scheduleAtFixedRate(new UpdateService(), 0, 100, TimeUnit.MILLISECONDS);
 		scheduledExecutorService.scheduleAtFixedRate(new PingService(), 0, 5, TimeUnit.SECONDS);
 	}
 
@@ -30,6 +32,15 @@ public class Server
 	{
 		System.out.println("[GLOBAL MSG] " + message);
 		room.announce(message);
+	}
+
+	private static class UpdateService implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			room.update();
+		}
 	}
 
 	private static class PingService implements Runnable
