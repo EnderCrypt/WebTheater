@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import javax.websocket.CloseReason.CloseCodes;
 
 import net.ddns.endercrypt.server.map.Room;
@@ -39,15 +37,16 @@ public class Server
 		@Override
 		public void run()
 		{
-			Consumer<User> pingCheck = (user) -> {
-				if (user.isTimedOut())
-				{
-					user.disconnect(CloseCodes.VIOLATED_POLICY, "Ping timeout");
-				}
-			};
+			unconnectedUsers.forEach(this::pingCheck);
+			idManager.iterate().forEach(this::pingCheck);
+		}
 
-			unconnectedUsers.forEach(pingCheck);
-			idManager.iterate().forEach(pingCheck);
+		private void pingCheck(User user)
+		{
+			if (user.isTimedOut())
+			{
+				user.disconnect(CloseCodes.VIOLATED_POLICY, "Ping timeout");
+			}
 		}
 	}
 }
