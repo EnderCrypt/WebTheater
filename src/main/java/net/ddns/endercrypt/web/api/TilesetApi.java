@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
@@ -74,9 +74,9 @@ public class TilesetApi
 	@GET
 	@Path("/Solid")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> solidity() throws IOException
+	public List<Integer> solidity() throws IOException
 	{
-		return Files.readAllLines(tilesetSolidityFile.toPath());
+		return tileset.getAll().stream().map(t -> t.getSolidity().ordinal()).collect(Collectors.toList());
 	}
 
 	@GET

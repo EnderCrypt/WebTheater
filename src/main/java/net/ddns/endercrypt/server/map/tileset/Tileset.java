@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -56,5 +57,10 @@ public class Tileset
 	public Tile get(int index)
 	{
 		return tileset[index];
+	}
+
+	public List<Tile> getAll()
+	{
+		return Arrays.asList(tileset);
 	}
 }
