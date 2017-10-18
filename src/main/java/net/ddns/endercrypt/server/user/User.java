@@ -107,7 +107,11 @@ public class User implements UserEndpointObject
 	@WsEventListener(NetMessageType.CHATMESSAGE_LOCAL)
 	private void CHATMESSAGE_LOCAL(String data)
 	{
-		// TODO
+		String echo = getId() + ":" + data;
+		for (User user : getRoom().get().listUsers())
+		{
+			user.getUserEndpoint().send(NetMessageType.CHATMESSAGE_LOCAL, echo);
+		}
 	}
 
 	@WsEventListener(NetMessageType.MOVE)
