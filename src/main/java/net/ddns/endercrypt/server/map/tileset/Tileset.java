@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -26,11 +27,9 @@ public class Tileset
 		int tilesy = fullTileset.getHeight() / height;
 		int count = tilesx * tilesy;
 
-		tilesetInfo = new TilesetInfo(count, width, height);
-
 		List<String> solidityList = Files.readAllLines(solidityFile.toPath());
 
-		tileset = new Tile[tilesetInfo.getCount()];
+		tileset = new Tile[count];
 		int i = -1;
 		for (int y = 0; y < tilesy; y++)
 		{
@@ -42,6 +41,8 @@ public class Tileset
 				tileset[i] = new Tile(img, solidity);
 			}
 		}
+
+		tilesetInfo = new TilesetInfo(count, width, height);
 	}
 
 	public BufferedImage getFullTileset()
@@ -62,5 +63,41 @@ public class Tileset
 	public List<Tile> getAll()
 	{
 		return Arrays.asList(tileset);
+	}
+
+	public class TilesetInfo
+	{
+		private int count = 0;
+		private int width = 0;
+		private int height = 0;
+		private List<Integer> solid;
+
+		public TilesetInfo(int count, int width, int height)
+		{
+			this.count = count;
+			this.width = width;
+			this.height = height;
+			solid = getAll().stream().map(t -> t.getSolidity().ordinal()).collect(Collectors.toList());
+		}
+
+		public int getCount()
+		{
+			return count;
+		}
+
+		public int getWidth()
+		{
+			return width;
+		}
+
+		public int getHeight()
+		{
+			return height;
+		}
+
+		public List<Integer> getSolid()
+		{
+			return solid;
+		}
 	}
 }

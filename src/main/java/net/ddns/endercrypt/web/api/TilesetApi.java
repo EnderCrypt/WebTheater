@@ -4,9 +4,6 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -52,7 +49,7 @@ public class TilesetApi
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object main() throws IOException
 	{
-		return tileset.getTilesetInfo().serializable();
+		return tileset.getTilesetInfo();
 	}
 
 	@GET
@@ -69,14 +66,6 @@ public class TilesetApi
 				output.flush();
 			}
 		}).build();
-	}
-
-	@GET
-	@Path("/Solid")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Integer> solidity() throws IOException
-	{
-		return tileset.getAll().stream().map(t -> t.getSolidity().ordinal()).collect(Collectors.toList());
 	}
 
 	@GET
