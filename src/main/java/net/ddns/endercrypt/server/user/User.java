@@ -3,6 +3,7 @@ package net.ddns.endercrypt.server.user;
 import net.ddns.endercrypt.web.socket.UserEndpointObject;
 
 import java.awt.Point;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.websocket.CloseReason;
@@ -13,6 +14,7 @@ import net.ddns.endercrypt.server.Server;
 import net.ddns.endercrypt.server.event.NetMessageType;
 import net.ddns.endercrypt.server.event.UserEventManager;
 import net.ddns.endercrypt.server.event.WsEventListener;
+import net.ddns.endercrypt.server.map.Room;
 import net.ddns.endercrypt.web.socket.UserEndpoint;
 
 public class User implements UserEndpointObject
@@ -27,6 +29,7 @@ public class User implements UserEndpointObject
 	private String name;
 	private Point position = new Point(0, 0);
 	private long lastMessageRecieved;
+	private Optional<Room> room;
 
 	public User(UserEndpoint userEndpoint)
 	{
@@ -130,6 +133,15 @@ public class User implements UserEndpointObject
 		System.out.println(sb.toString());
 	}
 
+	// SETTERS
+
+	public void setRoom(Room room)
+	{
+		this.room = Optional.ofNullable(room);
+	}
+
+	// GETTERS //
+
 	public UserEndpoint getUserEndpoint()
 	{
 		return userEndpoint;
@@ -155,6 +167,11 @@ public class User implements UserEndpointObject
 		long time = System.currentTimeMillis();
 		time = (time - lastMessageRecieved);
 		return (time >= PING_TIMEOUT);
+	}
+
+	public Optional<Room> getRoom()
+	{
+		return room;
 	}
 
 	@Override

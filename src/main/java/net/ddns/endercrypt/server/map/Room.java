@@ -96,6 +96,7 @@ public class Room
 		// send room data
 		user.getUserEndpoint().send(NetMessageType.LOAD_ROOM, getRoomJson().toString());
 		// add user
+		user.setRoom(this);
 		users.add(user);
 		// send JOIN's to this user
 		StringBuilder sb = new StringBuilder();
@@ -121,6 +122,7 @@ public class Room
 
 	public void removeUser(User user)
 	{
+		user.setRoom(null);
 		if (users.remove(user) == false)
 		{
 			throw new IllegalStateException("User " + user + " was not in room " + this);
