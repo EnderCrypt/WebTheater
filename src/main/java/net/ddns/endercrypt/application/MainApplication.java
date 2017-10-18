@@ -36,7 +36,7 @@ public class MainApplication extends Application<ApplicationConfiguration>
 	{
 		// get jersey
 		JerseyEnvironment jersey = environment.jersey();
-		environment.jersey().setUrlPattern("/Api/*");
+		environment.jersey().setUrlPattern("/API/*");
 
 		// websockets
 		ServerEndpointConfig config = ServerEndpointConfig.Builder.create(WsTheaterEndpoint.class, "/WsTheater").build();
