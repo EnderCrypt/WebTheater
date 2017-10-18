@@ -74,6 +74,12 @@ public class User implements UserEndpointObject
 		}
 	}
 
+	@WsEventListener(NetMessageType.PING)
+	private void PING(String data)
+	{
+		// ignore
+	}
+
 	@WsEventListener(NetMessageType.ENDPOINT_LOGIN)
 	private void ENDPOINT_LOGIN(String data)
 	{
@@ -96,6 +102,18 @@ public class User implements UserEndpointObject
 		Server.announce("User joined: " + getName() + " (id: " + id + ")");
 		Server.unconnectedUsers.remove(this);
 		Server.room.addUser(this);
+	}
+
+	@WsEventListener(NetMessageType.CHATMESSAGE_LOCAL)
+	private void CHATMESSAGE_LOCAL(String data)
+	{
+		// TODO
+	}
+
+	@WsEventListener(NetMessageType.MOVE)
+	private void MOVE(String data)
+	{
+		// TODO
 	}
 
 	public void errorDisconnect(Throwable throwable)
