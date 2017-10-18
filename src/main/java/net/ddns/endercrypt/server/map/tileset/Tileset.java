@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 public class Tileset
 {
+	private BufferedImage fullTileset;
 	private TilesetInfo tilesetInfo;
 	private Tile[] tileset;
 
@@ -19,9 +20,9 @@ public class Tileset
 		int width = tileSize.width;
 		int height = tileSize.height;
 
-		BufferedImage image = ImageIO.read(imageFile);
-		int tilesx = image.getWidth() / width;
-		int tilesy = image.getHeight() / height;
+		fullTileset = ImageIO.read(imageFile);
+		int tilesx = fullTileset.getWidth() / width;
+		int tilesy = fullTileset.getHeight() / height;
 		int count = tilesx * tilesy;
 
 		tilesetInfo = new TilesetInfo(count, width, height);
@@ -35,11 +36,16 @@ public class Tileset
 			for (int x = 0; x < tilesx; x++)
 			{
 				i++;
-				BufferedImage img = image.getSubimage(x * tileSize.width, y * tileSize.height, tileSize.width, tileSize.height);
+				BufferedImage img = fullTileset.getSubimage(x * tileSize.width, y * tileSize.height, tileSize.width, tileSize.height);
 				Solidity solidity = Solidity.valueOf(solidityList.get(i));
 				tileset[i] = new Tile(img, solidity);
 			}
 		}
+	}
+
+	public BufferedImage getFullTileset()
+	{
+		return fullTileset;
 	}
 
 	public TilesetInfo getTilesetInfo()

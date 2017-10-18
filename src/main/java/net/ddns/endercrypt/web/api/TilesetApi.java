@@ -48,11 +48,27 @@ public class TilesetApi
 	}
 
 	@GET
-	@Path("/Info")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Object main() throws IOException
 	{
 		return tileset.getTilesetInfo().serializable();
+	}
+
+	@GET
+	@Path("/Full")
+	@Produces("image/png")
+	public Response fullTileset(@PathParam("index") int index) throws IOException
+	{
+		return Response.ok().entity(new StreamingOutput()
+		{
+			@Override
+			public void write(OutputStream output) throws IOException, WebApplicationException
+			{
+				ImageIO.write(tileset.getFullTileset(), "PNG", output);
+				output.flush();
+			}
+		}).build();
 	}
 
 	@GET
@@ -64,9 +80,9 @@ public class TilesetApi
 	}
 
 	@GET
-	@Path("/Image/{index}")
+	@Path("/{index}")
 	@Produces("image/png")
-	public Response main(@PathParam("index") int index) throws IOException
+	public Response getTile(@PathParam("index") int index) throws IOException
 	{
 		if ((index < 0) || (index >= tileset.getTilesetInfo().getCount()))
 		{
@@ -84,5 +100,4 @@ public class TilesetApi
 			}
 		}).build();
 	}
-
 }
