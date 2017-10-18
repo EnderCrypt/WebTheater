@@ -23,3 +23,6 @@ NetMessageType.SETPOS = 6;
 
 // send position
 NetMessageType.MOVE = 7;
+
+//NOT USED FROM CLIENTSIDE
+NetMessageType.LOAD_ROOM = 8

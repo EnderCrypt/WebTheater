@@ -133,6 +133,10 @@ Theater.Listerners[NetMessageType.MOVE] = function(data)
 	position.x = Number(split[0]);
 	position.y = Number(split[1]);
 };
+Theater.Listerners[NetMessageType.LOAD_ROOM] = function(data)
+{
+	// TODO
+};
 
 
 // functions

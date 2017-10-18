@@ -25,4 +25,8 @@ public class NetMessageType
 
 	// TELEPORT/ send position
 	public static final int MOVE = 7;
+
+	// send room_width, room_height, is_video_room, all tiles
+	// user join's and move should be sent directly after this
+	public static final int LOAD_ROOM = 8;
 }

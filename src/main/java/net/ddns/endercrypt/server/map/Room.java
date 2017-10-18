@@ -1,5 +1,6 @@
 package net.ddns.endercrypt.server.map;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +12,22 @@ public class Room
 	private List<User> users = new ArrayList<>();
 	private List<User> immutableList = Collections.unmodifiableList(users);
 
+	private Dimension roomSize = new Dimension(10, 10);
+	private int[][] room;
+
 	public Room()
 	{
-		// TODO Auto-generated constructor stub
+		room = new int[roomSize.width][roomSize.height];
+		for (int y = 0; y < roomSize.width; y++)
+		{
+			for (int x = 0; x < roomSize.height; x++)
+			{
+				if ((x == 0) || (y == 0) || (x == roomSize.width) || (y == roomSize.height))
+					room[x][y] = 30;
+				else
+					room[x][y] = 3;
+			}
+		}
 	}
 
 	public boolean isUserInRoom(User user)
@@ -29,11 +43,32 @@ public class Room
 		}
 	}
 
+	public String getRoomData()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(roomSize.width).append(',');
+		sb.append(roomSize.height).append(',');
+		sb.append(0); // IS YOUTUBE ROOM OR NOT
+		sb.append(':');
+		for (int y = 0; y < roomSize.width; y++)
+		{
+			for (int x = 0; x < roomSize.height; x++)
+			{
+				sb.append(String.valueOf(room[x][y])).append(',');
+			}
+		}
+		sb.setLength(sb.length() - 1);
+		return sb.toString();
+	}
+
 	public void addUser(User user)
 	{
 		if (isUserInRoom(user))
 			throw new IllegalStateException("User " + user + " already in room " + this);
 		announce(user.getName() + " has entered the room!");
+		// send room data
+		user.getUserEndpoint().send(NetMessageType.LOAD_ROOM, getRoomData());
+		// add user
 		users.add(user);
 		// send JOIN's to this user
 		StringBuilder sb = new StringBuilder();
